@@ -1,0 +1,356 @@
+# Individual Project Api
+
+base link: https://7wgxcmviyj.execute-api.ap-southeast-3.amazonaws.com/Prod/provider/login
+
+Endpoints :
+
+# Provider
+
+- POST /provider/login
+
+# Tenant
+
+- POST /tenant
+
+# 1. POST / provider/login
+
+Request:
+
+-body:
+
+```json
+{
+  "email": "string",
+  "password": "password"
+}
+```
+
+_Response (201 - Created)_
+
+```json
+{
+  "token": "example token"
+}
+```
+
+# 1. POST /register
+
+Request:
+
+- body:
+
+```json
+{
+  "email": "string",
+  "name": "string",
+  "password": "string"
+}
+```
+
+_Response (200 - Ok)_
+
+```json
+{
+  "message": "User with email <new user email> has been created"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Invalid email/password"
+}
+```
+
+# 2. POST /tenant
+
+Request:
+
+- body:
+
+```json
+{
+  "tenant_name": "string",
+  "company_name": "string",
+  "country": "string",
+  "industry": "string",
+  "company_size": "int",
+  "SubscriptionTypeId": "int",
+  "email": "string",
+  "password": "string"
+}
+```
+
+_Response (201 - OK)_
+
+```json
+{
+  "message": "Success Added new Tenant to our System."
+}
+```
+
+_Response (400 - Bad Request)_
+
+```json
+{
+  "message": "Email is required"
+}
+OR
+{
+  "message": "Password is required"
+}
+```
+
+_Response (401 - Unauthorized)_
+
+```json
+{
+  "message": "Invalid email/password"
+}
+```
+
+# 3. GET /medicines
+
+Description : Find all medicines data
+Response 200 (OK)
+
+```json
+[
+{
+        "id": 1,
+        "name": "Betadine Mouthwash & Gargle / Obat Kumur / 190Ml",
+        "description": "Betadine obat kumur 190ml",
+        "imgUrl": "https://images.tokopedia.net/img/cache/900/product-1/2020/10/6/12048559/12048559_86557cfd-179c-4d47-ac34-4985e4b7213f_500_500",
+        "price": 38000,
+        "weight": 200,
+        "createdAt": "2022-09-14T13:30:15.722Z",
+        "updatedAt": "2022-09-14T13:30:15.722Z"
+    },
+    {
+        "id": 2,
+        "name": "SPC MASK EARLOOP 3PLY 50 PCS / MASKER PELINDUNG / MASKER MEDIS",
+        "description": "SPC Masker Medis Headloop memiliki 3 lapis bahan bahan perlindungan yang melindungi dari virus, bakteri, dan partikel kecil lainnya.",
+        "imgUrl": "https://images.tokopedia.net/img/cache/900/product-1/2020/10/6/12048559/12048559_8c4343da-ca69-4d15-ab96-8484a1ad1396_500_500",
+        "price": 36000,
+        "weight": 200,
+        "createdAt": "2022-09-14T13:30:15.722Z",
+        "updatedAt": "2022-09-14T13:30:15.722Z"
+    },
+    ...
+]
+```
+
+# 4. GET /medicines/:id
+
+Description : Find medicines data by id
+
+- params.id: :id
+
+Response 200 (OK)
+
+```json
+[
+{
+        "id": 1,
+        "name": "Betadine Mouthwash & Gargle / Obat Kumur / 190Ml",
+        "description": "Betadine obat kumur 190ml",
+        "imgUrl": "https://images.tokopedia.net/img/cache/900/product-1/2020/10/6/12048559/12048559_86557cfd-179c-4d47-ac34-4985e4b7213f_500_500",
+        "price": 38000,
+        "weight": 200,
+        "createdAt": "2022-09-14T13:30:15.722Z",
+        "updatedAt": "2022-09-14T13:30:15.722Z"
+    },
+    ...
+]
+```
+
+# 5. GET /mycart
+
+Description : Find all cart data
+Response 200 (OK)
+
+```json
+[
+{
+        "id": 1,
+        "UserId": 1,
+        "MedicineId": 1,
+        "createdAt": "2022-09-14T13:30:49.884Z",
+        "updatedAt": "2022-09-14T13:30:49.884Z",
+        "Medicine": {
+            "id": 1,
+            "name": "Betadine Mouthwash & Gargle / Obat Kumur / 190Ml",
+            "description": "Betadine obat kumur 190ml",
+            "imgUrl": "https://images.tokopedia.net/img/cache/900/product-1/2020/10/6/12048559/12048559_86557cfd-179c-4d47-ac34-4985e4b7213f_500_500",
+            "price": 38000,
+            "weight": 200,
+            "createdAt": "2022-09-14T13:30:15.722Z",
+            "updatedAt": "2022-09-14T13:30:15.722Z"
+        }
+    },
+    {
+        "id": 9,
+        "UserId": 1,
+        "MedicineId": 3,
+        "createdAt": "2022-09-14T20:40:19.572Z",
+        "updatedAt": "2022-09-14T20:40:19.572Z",
+        "Medicine": {
+            "id": 3,
+            "name": "HOLISTICARE SUPER ESTER C 30`S",
+            "description": "Holisticare Ester C adalah vitamin C inovatif, unik, dipatenkan dan tidak asam (netral) yang diproses secara alamiah sehingga menghasilkan vitamin C yang mudah, lebih cepat dan lebih banyak diserap oleh tubuh.",
+            "imgUrl": "https://images.tokopedia.net/img/cache/900/product-1/2020/6/4/12048559/12048559_a4dbf76d-57ef-405f-a6ed-d428d07463b7_800_800",
+            "price": 42000,
+            "weight": 100,
+            "createdAt": "2022-09-14T13:30:15.722Z",
+            "updatedAt": "2022-09-14T13:30:15.722Z"
+        }
+    }
+    ...
+]
+```
+
+# 6. POST /cart/:medicineId
+
+Description : Add medicine/item to cart
+Request:
+
+- body:
+
+```json
+{
+  "UserId": "integer",
+  "MedicineId": "integer"
+}
+```
+
+_Response (201 - Created)_
+
+```json
+{
+  "id": "integer",
+  "UserId": "integer",
+  "MedicineId": "integer"
+}
+```
+
+# 7. POST /cartshipping
+
+Description : Get shipping fee form 3rd party API
+Request:
+
+- body:
+
+```json
+{
+  "origin": "integer",
+  "destination": "integer",
+  "weight": "integer",
+  "courier": "string"
+}
+```
+
+_Response (201 - Created)_
+
+```json
+[
+  {
+    "value": 9000,
+    "etd": "1-2",
+    "note": ""
+  }
+]
+```
+
+# 8. POST /checkout
+
+Description : checkout cart
+Request:
+
+- body:
+
+```json
+{
+  "order_id": "integer",
+  "gross_amount": "integer"
+}
+```
+
+_Response (201 - Created)_
+
+```json
+{
+  "token": "ecb0f1ba-c0c3-4484-9009-abd6420bb2d6",
+  "redirect_url": "https://app.sandbox.midtrans.com/snap/v3/redirection/ecb0f1ba-c0c3-4484-9009-abd6420bb2d6"
+}
+```
+
+# 9. DELETE /mycart/:id
+
+Description : delete cart item by id
+Request:
+
+- params: id
+
+_Response (200 - Ok)_
+
+```json
+{
+  "message": "Success delete cart"
+}
+```
+
+# 10. GET /address
+
+Description : Find all address
+Response 200 (OK)
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Budi",
+    "street": "jomasa",
+    "city": 153,
+    "UserId": 1,
+    "createdAt": "2022-09-14T14:08:11.468Z",
+    "updatedAt": "2022-09-14T14:08:11.468Z"
+  }
+]
+```
+
+# 11. POST /address
+
+Request:
+
+- body:
+
+```json
+{
+  "name": "string",
+  "street": "string",
+  "city": "integer",
+  "UserId": "integer"
+}
+```
+
+_Response (201 - Created)_
+
+```json
+{
+  "name": "Budi",
+  "street": "jomasa",
+  "city": 153,
+  "UserId": 1
+}
+```
+
+# Global Error
+
+Response 500 (Internal server error)
+
+```json
+{
+  "message": "Internal server error"
+}
+```
