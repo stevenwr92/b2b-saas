@@ -4,18 +4,20 @@ const path = require("path");
 const basename = path.basename(__filename);
 const db = {};
 
-async function loadSequelize(database, host) {
-  const sequelize = new Sequelize(database, "postgres", "postgres", {
-    host: "dev-b2b-ms.cry4cich1xjp.ap-southeast-3.rds.amazonaws.com",
+async function loadSequelizeSiloed(tenant) {
+  console.log(tenant);
+  const sequelize = new Sequelize("postgres", "postgres", "postgres", {
+    host: `${tenant}.cry4cich1xjp.ap-southeast-3.rds.amazonaws.com`,
     dialect: "postgres",
     pool: {
       max: 2,
       min: 0,
       idle: 0,
       acquire: 3000,
-      evict: 6,
+      evict: 2,
     },
   });
+  console.log(sequelize);
 
   fs.readdirSync(__dirname)
     .filter((file) => {
@@ -43,4 +45,4 @@ async function loadSequelize(database, host) {
   return db;
 }
 
-module.exports = { loadSequelize };
+module.exports = { loadSequelizeSiloed };

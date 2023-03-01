@@ -1,0 +1,22 @@
+{
+  "name": "layer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-cdk/cli-lib-alpha": "^2.65.0-alpha.0",
+    "@aws-sdk/client-secrets-manager": "^3.272.0",
+    "aws-cdk": "^2.65.0",
+    "aws-cdk-lib": "^2.65.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "pg": "^8.8.0",
+    "sequelize": "^6.28.0",
+    "uuid": "^9.0.0"
+  }
+}

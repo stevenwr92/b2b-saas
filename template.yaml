@@ -4,13 +4,13 @@ Description: >
   B2B
 Globals:
   Function:
-    Timeout: 10
+    Timeout: 20
     Architectures:
       - x86_64
     MemorySize: 512
   Api:
     Cors:
-      AllowMethods: "'GET, POST, OPTIONS, PUT, DELETE'"
+      AllowMethods: "'GET, POST, OPTIONS, PUT, DELETE, PATCH'"
       AllowHeaders: "'content-type, Authorization'"
       AllowOrigin: "'*'"
 
@@ -62,7 +62,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: src/
-      Handler: user/register.register
+      Handler: siloed/user/register.register
       Runtime: nodejs16.x
       Events:
         getTenant:
@@ -159,7 +159,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /tenant/{id}
+            Path: /tenant-status/{id}
             Method: PATCH
             Auth:
               Authorizer: ProviderAuthorizer
@@ -267,6 +267,42 @@ Resources:
             RestApiId: !Ref MyApi
             Path: /tenant/login
             Method: POST
+      Layers:
+        - !Ref Layers
+
+  createGroup:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: siloed/group/createGroup.create
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /group
+            Method: POST
+            Auth:
+              Authorizer: TenantAuthorizer
+      Layers:
+        - !Ref Layers
+
+  addMember:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: siloed/userGroup/addMember.addMember
+      Runtime: nodejs16.x
+      Events:
+        addMember:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /add-member
+            Method: PUT
+            Auth:
+              Authorizer: TenantAuthorizer
       Layers:
         - !Ref Layers
 

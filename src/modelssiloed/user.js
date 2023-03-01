@@ -2,7 +2,7 @@
 const { Model } = require("sequelize");
 const bcrypt = require("bcryptjs");
 module.exports = (sequelize, DataTypes) => {
-  class Tenant extends Model {
+  class User extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -10,25 +10,16 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Tenant.hasOne(models.TenantDetail, { onDelete: "CASCADE" });
-      Tenant.hasMany(models.Subscription, { onDelete: "CASCADE" });
-      Tenant.hasMany(models.TenantUser, { onDelete: "CASCADE" });
+      User.hasOne(models.UserDetail, { onDelete: "CASCADE" });
+      User.belongsTo(models.Group, { onDelete: "CASCADE" });
     }
   }
-  Tenant.init(
+  User.init(
     {
-      tenant_code: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      tenant_name: {
+      username: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
-      },
-      is_activated: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
       },
       email: {
         type: DataTypes.STRING,
@@ -44,14 +35,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      phonenumber: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      access_pin: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
     },
     {
       sequelize,
-      modelName: "Tenant",
+      modelName: "User",
     }
   );
-  Tenant.addHook("beforeCreate", (tenant, options) => {
-    tenant.password = bcrypt.hashSync(tenant.password, 8);
+  User.addHook("beforeCreate", (user, options) => {
+    user.password = bcrypt.hashSync(user.password, 8);
   });
-  return Tenant;
+  return User;
 };
