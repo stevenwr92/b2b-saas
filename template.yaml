@@ -15,6 +15,27 @@ Globals:
       AllowOrigin: "'*'"
 
 Resources:
+  MyDB:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: "20"
+      AllowMajorVersionUpgrade: true
+      AutoMinorVersionUpgrade: true
+      DBInstanceClass: db.t3.micro
+      Engine: Postgres
+      DBInstanceIdentifier: !Ref AWS::StackName
+      EngineVersion: 14.6
+      MasterUsername: postgres
+      MasterUserPassword: postgres
+      MultiAZ: false
+      Port: "5432"
+      PubliclyAccessible: true
+      StorageType: gp2
+      VPCSecurityGroups:
+        - sg-0dc1004fcd2cc9c26
+      DBSubnetGroupName: dev_subnet_rds_vpc
+    DeletionPolicy: Snapshot
+
   MyApi:
     Type: AWS::Serverless::Api
     Properties:
