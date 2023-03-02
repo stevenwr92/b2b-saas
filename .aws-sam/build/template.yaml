@@ -1,0 +1,318 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'B2B
+
+  '
+Globals:
+  Function:
+    Timeout: 20
+    Architectures:
+    - x86_64
+    MemorySize: 512
+  Api:
+    Cors:
+      AllowMethods: '''GET, POST, OPTIONS, PUT, DELETE'''
+      AllowHeaders: '''content-type, Authorization'''
+      AllowOrigin: '''*'''
+Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Auth:
+        Authorizers:
+          ProviderAuthorizer:
+            FunctionArn:
+              Fn::GetAtt:
+              - ProviderAuth
+              - Arn
+            Identity:
+              Headers: null
+              ReauthorizeEvery: 0
+          TenantAuthorizer:
+            FunctionArn:
+              Fn::GetAtt:
+              - TenantAuth
+              - Arn
+            Identity:
+              Headers: null
+              ReauthorizeEvery: 0
+  ProviderAuth:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ProviderAuth
+      Handler: provider/auth.auth
+      Runtime: nodejs16.x
+      Description: Authorizer
+      Environment:
+        Variables:
+          SECRET_KEY: Rahasia
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: ProviderAuth
+  TenantAuth:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: TenantAuth
+      Handler: tenant/auth.auth
+      Runtime: nodejs16.x
+      Description: Authorizer For Tenant
+      Environment:
+        Variables:
+          SECRET_KEY: Rahasia
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: TenantAuth
+  registerUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: registerUser
+      Handler: user/register.register
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant/user
+            Method: POST
+            Auth:
+              Authorizer: TenantAuthorizer
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: registerUser
+  getTenantById:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getTenantById
+      Handler: tenant/getTenantById.findByPk
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant/{id}
+            Method: GET
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: getTenantById
+  getTenant:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getTenant
+      Handler: tenant/getTenant.findAll
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant
+            Method: GET
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: getTenant
+  registerTenant:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: registerTenant
+      Handler: tenant/registerTenant.register
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant
+            Method: POST
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: registerTenant
+  editTenant:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: editTenant
+      Handler: tenant/editTenant.editTenant
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant/{id}
+            Method: PUT
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: editTenant
+  editTenantStatus:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: editTenantStatus
+      Handler: tenant/editStatus.editStatus
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant/{id}
+            Method: PATCH
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: editTenantStatus
+  editTenantDetail:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: editTenantDetail
+      Handler: tenant/editTenantDetail.editTenant
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant-detail/{id}
+            Method: PUT
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: editTenantDetail
+  newSubscriptionType:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: newSubscriptionType
+      Handler: subscription/newSubscriptionType.newSubscriptionType
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /subs-type
+            Method: POST
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: newSubscriptionType
+  getSubscriptionType:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getSubscriptionType
+      Handler: subscription/getSubscriptionType.getSubscriptionType
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /subs-type
+            Method: GET
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: getSubscriptionType
+  newProvider:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: newProvider
+      Handler: provider/newProvider.newProvider
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /provider
+            Method: POST
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: newProvider
+  providerLogin:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: providerLogin
+      Handler: provider/login.login
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /provider/login
+            Method: POST
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: providerLogin
+  tenantLogin:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: tenantLogin
+      Handler: tenant/login.login
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant/login
+            Method: POST
+      Layers:
+      - Ref: Layers
+    Metadata:
+      SamResourceId: tenantLogin
+  Layers:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: dependecies
+      Description: qweW
+      ContentUri: ..\..\dependecies
+      CompatibleRuntimes:
+      - nodejs16.x
+      LicenseInfo: MIT
+      RetentionPolicy: Retain
+Outputs:
+  Api:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/Prod

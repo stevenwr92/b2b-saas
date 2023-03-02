@@ -1,0 +1,232 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS SAM CLI Nested Stack for Auto Dependency Layer Creation
+Metadata:
+  SamCliInfo: 1.67.0
+  key: AWS SAM CLI sync command
+Outputs:
+  ProviderAuthd90e1156DepLayer:
+    Value:
+      Ref: ProviderAuthd90e1156DepLayer
+  TenantAuthad78ddf4DepLayer:
+    Value:
+      Ref: TenantAuthad78ddf4DepLayer
+  addMemberfd5cb91cDepLayer:
+    Value:
+      Ref: addMemberfd5cb91cDepLayer
+  createGroup7a98f97bDepLayer:
+    Value:
+      Ref: createGroup7a98f97bDepLayer
+  editTenant36bcb1ecDepLayer:
+    Value:
+      Ref: editTenant36bcb1ecDepLayer
+  editTenantDetail06d0d393DepLayer:
+    Value:
+      Ref: editTenantDetail06d0d393DepLayer
+  editTenantStatus6395a45fDepLayer:
+    Value:
+      Ref: editTenantStatus6395a45fDepLayer
+  getSubscriptionTyped0f892edDepLayer:
+    Value:
+      Ref: getSubscriptionTyped0f892edDepLayer
+  getTenant4307fce3DepLayer:
+    Value:
+      Ref: getTenant4307fce3DepLayer
+  getTenantById909029cdDepLayer:
+    Value:
+      Ref: getTenantById909029cdDepLayer
+  newProvider4697a334DepLayer:
+    Value:
+      Ref: newProvider4697a334DepLayer
+  newSubscriptionType0d38e42bDepLayer:
+    Value:
+      Ref: newSubscriptionType0d38e42bDepLayer
+  providerLogin95292294DepLayer:
+    Value:
+      Ref: providerLogin95292294DepLayer
+  registerTenantcdb7d5a7DepLayer:
+    Value:
+      Ref: registerTenantcdb7d5a7DepLayer
+  registerUser1fd45eb0DepLayer:
+    Value:
+      Ref: registerUser1fd45eb0DepLayer
+  tenantLogind0f9101dDepLayer:
+    Value:
+      Ref: tenantLogind0f9101dDepLayer
+Resources:
+  ProviderAuthd90e1156DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\ProviderAuthd90e1156DepLayer
+      Description: Auto created layer for dependencies of function ProviderAuth
+      LayerName: hehe529ca805-ProviderAuthd90e1156-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  TenantAuthad78ddf4DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\TenantAuthad78ddf4DepLayer
+      Description: Auto created layer for dependencies of function TenantAuth
+      LayerName: hehe529ca805-TenantAuthad78ddf4-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  addMemberfd5cb91cDepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\addMemberfd5cb91cDepLayer
+      Description: Auto created layer for dependencies of function addMember
+      LayerName: hehe529ca805-addMemberfd5cb91c-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  createGroup7a98f97bDepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\createGroup7a98f97bDepLayer
+      Description: Auto created layer for dependencies of function createGroup
+      LayerName: hehe529ca805-createGroup7a98f97b-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  editTenant36bcb1ecDepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\editTenant36bcb1ecDepLayer
+      Description: Auto created layer for dependencies of function editTenant
+      LayerName: hehe529ca805-editTenant36bcb1ec-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  editTenantDetail06d0d393DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\editTenantDetail06d0d393DepLayer
+      Description: Auto created layer for dependencies of function editTenantDetail
+      LayerName: hehe529ca805-editTenantDetail06d0d393-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  editTenantStatus6395a45fDepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\editTenantStatus6395a45fDepLayer
+      Description: Auto created layer for dependencies of function editTenantStatus
+      LayerName: hehe529ca805-editTenantStatus6395a45f-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  getSubscriptionTyped0f892edDepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\getSubscriptionTyped0f892edDepLayer
+      Description: Auto created layer for dependencies of function getSubscriptionType
+      LayerName: hehe529ca805-getSubscriptionTyped0f892ed-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  getTenant4307fce3DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\getTenant4307fce3DepLayer
+      Description: Auto created layer for dependencies of function getTenant
+      LayerName: hehe529ca805-getTenant4307fce3-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  getTenantById909029cdDepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\getTenantById909029cdDepLayer
+      Description: Auto created layer for dependencies of function getTenantById
+      LayerName: hehe529ca805-getTenantById909029cd-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  newProvider4697a334DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\newProvider4697a334DepLayer
+      Description: Auto created layer for dependencies of function newProvider
+      LayerName: hehe529ca805-newProvider4697a334-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  newSubscriptionType0d38e42bDepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\newSubscriptionType0d38e42bDepLayer
+      Description: Auto created layer for dependencies of function newSubscriptionType
+      LayerName: hehe529ca805-newSubscriptionType0d38e42b-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  providerLogin95292294DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\providerLogin95292294DepLayer
+      Description: Auto created layer for dependencies of function providerLogin
+      LayerName: hehe529ca805-providerLogin95292294-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  registerTenantcdb7d5a7DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\registerTenantcdb7d5a7DepLayer
+      Description: Auto created layer for dependencies of function registerTenant
+      LayerName: hehe529ca805-registerTenantcdb7d5a7-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  registerUser1fd45eb0DepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\registerUser1fd45eb0DepLayer
+      Description: Auto created layer for dependencies of function registerUser
+      LayerName: hehe529ca805-registerUser1fd45eb0-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+  tenantLogind0f9101dDepLayer:
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      CompatibleRuntimes:
+      - nodejs16.x
+      ContentUri: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\tenantLogind0f9101dDepLayer
+      Description: Auto created layer for dependencies of function tenantLogin
+      LayerName: hehe529ca805-tenantLogind0f9101d-DepLayer
+      RetentionPolicy: Delete
+    Type: AWS::Serverless::LayerVersion
+Transform: AWS::Serverless-2016-10-31

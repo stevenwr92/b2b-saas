@@ -1,0 +1,413 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'B2B
+
+  '
+Globals:
+  Function:
+    Timeout: 20
+    Architectures:
+    - x86_64
+    MemorySize: 512
+  Api:
+    Cors:
+      AllowMethods: '''GET, POST, OPTIONS, PUT, DELETE, PATCH'''
+      AllowHeaders: '''content-type, Authorization'''
+      AllowOrigin: '''*'''
+Resources:
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Auth:
+        Authorizers:
+          ProviderAuthorizer:
+            FunctionArn:
+              Fn::GetAtt:
+              - ProviderAuth
+              - Arn
+            Identity:
+              Headers: null
+              ReauthorizeEvery: 0
+          TenantAuthorizer:
+            FunctionArn:
+              Fn::GetAtt:
+              - TenantAuth
+              - Arn
+            Identity:
+              Headers: null
+              ReauthorizeEvery: 0
+  ProviderAuth:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ProviderAuth
+      Handler: provider/auth.auth
+      Runtime: nodejs16.x
+      Description: Authorizer
+      Environment:
+        Variables:
+          SECRET_KEY: Rahasia
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.ProviderAuthd90e1156DepLayer
+    Metadata:
+      SamResourceId: ProviderAuth
+  TenantAuth:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: TenantAuth
+      Handler: tenant/auth.auth
+      Runtime: nodejs16.x
+      Description: Authorizer For Tenant
+      Environment:
+        Variables:
+          SECRET_KEY: Rahasia
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.TenantAuthad78ddf4DepLayer
+    Metadata:
+      SamResourceId: TenantAuth
+  registerUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: registerUser
+      Handler: siloed/user/register.register
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant/user
+            Method: POST
+            Auth:
+              Authorizer: TenantAuthorizer
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.registerUser1fd45eb0DepLayer
+    Metadata:
+      SamResourceId: registerUser
+  getTenantById:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getTenantById
+      Handler: tenant/getTenantById.findByPk
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant/{id}
+            Method: GET
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.getTenantById909029cdDepLayer
+    Metadata:
+      SamResourceId: getTenantById
+  getTenant:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getTenant
+      Handler: tenant/getTenant.findAll
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant
+            Method: GET
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.getTenant4307fce3DepLayer
+    Metadata:
+      SamResourceId: getTenant
+  registerTenant:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: registerTenant
+      Handler: tenant/registerTenant.register
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant
+            Method: POST
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.registerTenantcdb7d5a7DepLayer
+    Metadata:
+      SamResourceId: registerTenant
+  editTenant:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: editTenant
+      Handler: tenant/editTenant.editTenant
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant/{id}
+            Method: PUT
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.editTenant36bcb1ecDepLayer
+    Metadata:
+      SamResourceId: editTenant
+  editTenantStatus:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: editTenantStatus
+      Handler: tenant/editStatus.editStatus
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant-status/{id}
+            Method: PATCH
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.editTenantStatus6395a45fDepLayer
+    Metadata:
+      SamResourceId: editTenantStatus
+  editTenantDetail:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: editTenantDetail
+      Handler: tenant/editTenantDetail.editTenant
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant-detail/{id}
+            Method: PUT
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.editTenantDetail06d0d393DepLayer
+    Metadata:
+      SamResourceId: editTenantDetail
+  newSubscriptionType:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: newSubscriptionType
+      Handler: subscription/newSubscriptionType.newSubscriptionType
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /subs-type
+            Method: POST
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.newSubscriptionType0d38e42bDepLayer
+    Metadata:
+      SamResourceId: newSubscriptionType
+  getSubscriptionType:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getSubscriptionType
+      Handler: subscription/getSubscriptionType.getSubscriptionType
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /subs-type
+            Method: GET
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.getSubscriptionTyped0f892edDepLayer
+    Metadata:
+      SamResourceId: getSubscriptionType
+  newProvider:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: newProvider
+      Handler: provider/newProvider.newProvider
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /provider
+            Method: POST
+            Auth:
+              Authorizer: ProviderAuthorizer
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.newProvider4697a334DepLayer
+    Metadata:
+      SamResourceId: newProvider
+  providerLogin:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: providerLogin
+      Handler: provider/login.login
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /provider/login
+            Method: POST
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.providerLogin95292294DepLayer
+    Metadata:
+      SamResourceId: providerLogin
+  tenantLogin:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: tenantLogin
+      Handler: tenant/login.login
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /tenant/login
+            Method: POST
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.tenantLogind0f9101dDepLayer
+    Metadata:
+      SamResourceId: tenantLogin
+  createGroup:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: createGroup
+      Handler: siloed/group/createGroup.create
+      Runtime: nodejs16.x
+      Events:
+        getTenant:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /group
+            Method: POST
+            Auth:
+              Authorizer: TenantAuthorizer
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.createGroup7a98f97bDepLayer
+    Metadata:
+      SamResourceId: createGroup
+  addMember:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: addMember
+      Handler: siloed/userGroup/addMember.addMember
+      Runtime: nodejs16.x
+      Events:
+        addMember:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: MyApi
+            Path: /add-member
+            Method: PUT
+            Auth:
+              Authorizer: TenantAuthorizer
+      Layers:
+      - Ref: Layers
+      - Fn::GetAtt:
+        - AwsSamAutoDependencyLayerNestedStack
+        - Outputs.addMemberfd5cb91cDepLayer
+    Metadata:
+      SamResourceId: addMember
+  Layers:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: dependecies
+      Description: qweW
+      ContentUri: ..\..\dependecies
+      CompatibleRuntimes:
+      - nodejs16.x
+      LicenseInfo: MIT
+      RetentionPolicy: Retain
+  AwsSamAutoDependencyLayerNestedStack:
+    DeletionPolicy: Delete
+    Metadata:
+      CreatedBy: AWS SAM CLI sync command
+    Properties:
+      TemplateURL: C:\Users\stefa\ximply\b2b\.aws-sam\auto-dependency-layer\adl_nested_template.yaml
+    Type: AWS::CloudFormation::Stack
+Outputs:
+  Api:
+    Description: API Gateway endpoint URL for Prod stage for Hello World function
+    Value:
+      Fn::Sub: https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/Prod

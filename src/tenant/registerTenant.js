@@ -54,6 +54,12 @@ exports.register = async function (event, callback) {
     });
 
     await transaction.commit();
+
+    let name = newTenant.tenant_name.toLowerCase().replace(" ", "-");
+
+    axios.post(
+      `http://ec2-108-136-165-114.ap-southeast-3.compute.amazonaws.com:8080/job/tenant_provisioning/buildWithParameters?token=1234&name=${name}`
+    );
     response = {
       statusCode: 201,
       headers: {
